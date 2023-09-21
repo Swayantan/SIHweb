@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sliding Window</title>
+    <link rel="stylesheet" href="style1.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flickity@2/dist/flickity.min.css"
+    />
+  </head>
+  <style media="screen">
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;1,700&family=Roboto:wght@400;700&display=swap");
+
+    /* Default styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* :root {
+    --primary-text-color: black;
+    --secondary-text-color: grey;
+    --accent-color: lightblue;
+    --accent-dark-color: blue;
+    --padding-inline-section: 20px;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: var(--primary-text-color);
+} */
+
+    h1 {
+      font-size: 3rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+    }
+
+    p {
+      font-family: "Roboto", sans-serif;
+      font-size: 1.25rem;
+      color: var(--secondary-text-color);
+      line-height: 1.5rem;
+    }
+
+    a {
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .small-bold-text {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .container {
+      max-width: auto;
+      margin-inline: auto;
+      padding-inline: 200px;
+    }
+
+    .button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .semi-rounded-button {
+      padding: 10px 20px;
+      background-color: blue;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .container {
+        padding-inline: 20px; /* Adjust padding for smaller screens */
+      }
+    }
+
+    @media (max-width: 576px) {
+      h1 {
+        font-size: 2.5rem; /* Reduce h1 font size for smaller screens */
+      }
+
+      h2 {
+        font-size: 1.5rem; /* Reduce h2 font size for smaller screens */
+      }
+
+      h3 {
+        font-size: 1.25rem; /* Reduce h3 font size for smaller screens */
+      }
+
+      p {
+        font-size: 1rem; /* Reduce paragraph font size for smaller screens */
+      }
+
+      .small-bold-text {
+        font-size: 0.875rem; /* Reduce small-bold-text font size for smaller screens */
+      }
+    }
+
+    @media (max-width: 992px) {
+      .container {
+        padding-inline: 50px; /* Adjust padding for medium-sized screens */
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding-inline: 20px; /* Adjust padding for smaller screens */
+      }
+
+      .small-bold-text {
+        font-size: 0.875rem; /* Reduce font size for smaller screens */
+      }
+
+      .button {
+        flex-direction: column; /* Stack buttons vertically on small screens */
+        align-items: center;
+        margin-top: 10px;
+      }
+
+      .semi-rounded-button {
+        padding: 8px 16px; /* Adjust padding for smaller screens */
+        font-size: 14px; /* Adjust font size for smaller screens */
+      }
+    }
+
+    @media (max-width: 576px) {
+      h1 {
+        font-size: 2rem; /* Reduce h1 font size for smaller screens */
+      }
+
+      h2 {
+        font-size: 1.25rem; /* Reduce h2 font size for smaller screens */
+      }
+
+      h3 {
+        font-size: 1rem; /* Reduce h3 font size for smaller screens */
+      }
+
+      p {
+        font-size: 0.875rem; /* Reduce paragraph font size for smaller screens */
+      }
+
+      .small-bold-text {
+        font-size: 0.75rem; /* Further reduce font size for smaller screens */
+      }
+
+      .semi-rounded-button {
+        padding: 6px 12px; /* Further adjust padding for smaller screens */
+        font-size: 14px; /* Further adjust font size for smaller screens */
+      }
+    }
+
+    .button-gap {
+      margin: 0 10px; /* Adjust the margin value to control the gap width */
+    }
+    .carousel-cell {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    /* cell number */
+    .carousel-cell:before {
+      display: block;
+    }
+    body {
+      background-color: #ffffff;
+      font: 12px/1.4 "Gotham SSm A", "Helvetica Neue", Helvetica, Arial;
+    }
+
+    .wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+    }
+
+    .tile {
+      background: #2c2d2f linear-gradient(to left, #3b3d3f 50%, #2c2d2f 50%)
+        repeat scroll 0 0 / 200% 100%;
+      color: #fff;
+      display: inline-block;
+      margin: 3px;
+      padding: 5px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+      transition: background-position 0.1s ease 0s;
+      vertical-align: top;
+    }
+
+    .tile:hover {
+      background-position: 100% 0;
+      color: #ffffff;
+      cursor: pointer;
+      /* -webkit-transform: scale(0.97) perspective(400px);
+  -moz-transform: scale(0.97) perspective(400px)); */
+      -ms-transform: scale(0.97) perspective(400px);
+      transform: scale(0.97) perspective(400px);
+    }
+
+    .tile:active,
+    .tile.active {
+      background: #db3839;
+    }
+
+    .tile > span {
+      bottom: 5px;
+      font-size: 15px;
+      font-weight: bold;
+      left: 0;
+      margin: 0 auto;
+      overflow: hidden;
+      padding: 4px;
+      position: absolute;
+      right: 0;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .tile-small {
+      height: 64px;
+      width: 64px;
+    }
+
+    .tile-medium {
+      height: 128px;
+      width: 128px;
+    }
+
+    .tile-large {
+      height: 256px;
+      width: 256px;
+    }
+    .certify {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 50px;
+    }
+  </style>
+  <body>
+    <div class="top-banner" style="background-color: rgb(2, 2, 44)">
+      <div class="container">
+        <div
+          class="small-bold-text"
+          style="
+            display: flex;
+            align-items: center;
+            color: white;
+            font-size: 12px;
+            height: 40px;
+          "
+        >
+          <img
+            src="img\pngwing.png"
+            alt=""
+            style="margin-right: 10px; width: 40px; height: 40px"
+          />
+          Government Of India
+        </div>
+      </div>
+    </div>
+
+    <nav
+      style="
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        margin: auto;
+        overflow: hidden;
+        position: relative;
+      "
+    >
+      <div
+        class="container"
+        style="width: 100%; margin: auto; overflow: hidden; position: relative"
+      >
+        <div style="display: flex; align-items: center">
+          <img src="img\emblem.png" alt="" style="width: 60px; height: 90px" />
+          <img src="img\line.png" alt="" style="width: 40px; height: 90px" />
+          <img
+            src="img\digivault.png"
+            alt=""
+            style="width: 90px; height: 100px"
+          />
+          <div
+            class="small-bold-text"
+            style="
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              color: blue;
+              font-size: 30px;
+              margin-right: 800px;
+            "
+          >
+            DigiVault
+            <div style="color: blue; font-size: 10px">
+              A secure and trust files
+            </div>
+          </div>
+          <div class ="button">
+            <button class="semi-rounded-button">Sign In</button>
+            <div class="button-gap"></div>
+            <button class="semi-rounded-button">Sign Up</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <script
+      src="https://kit.fontawesome.com/fd8286b683.js"
+      crossorigin="anonymous"
+    ></script>
+    <div class="main">
+      <div
+        class="carousel"
+        data-flickity='{ "wrapAround": true, "autoPlay": true, "imagesLoaded":true }'
+      >
+        <div class="carousel-cell">
+          <img class="w3-image" src="img\quiz_banner_web.jpg" />
+        </div>
+        <div class="carousel-cell">
+          <img class="w3-image" src="img\ABC_Banner_Web.jpg" />
+        </div>
+        <div class="carousel-cell">
+          <img class="w3-image" src="img\DIKSHA Banner.jpg" />
+        </div>
+        <div class="carousel-cell">
+          <img class="w3-image" src="img\web_2_en.jpg" />
+        </div>
+      </div>
+      <div class="certify" style="margin-top: 50px">
+        <div class="wrap">
+          <a
+            href="..\Form\form.html"
+            class="tile tile-medium"
+            target="_blank"
+            style="border-radius: 20px; height: 200px; width: 150px"
+          >
+            <!-- Tile Content Goes Here -->
+            <p
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                font-size: medium;
+                margin-top: 20%;
+              "
+            >
+              <span>Validate<br /></span>
+              <span>Certificate<br /><br /></span>
+              <img src="img\certificate.png" style="height: 50%; width: 50%" />
+            </p>
+          </a>
+        </div>
+        <div
+          style="
+            background: white;
+            height: 200px;
+            width: 75%;
+            margin-left: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            padding: 20px;
+          "
+        >
+          <div
+            style="
+              background: #63ade6;
+              height: 100%;
+              width: 100%;
+              border-radius: 20px;
+              justify-content: center;
+              align-items: left;
+              display: flex;
+              padding: 10px;
+              font-size: 120%;
+              overflow-y: auto;
+            "
+          >
+            <span>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam,
+              saepe quaerat ex voluptatum non, quam odio nesciunt nemo, quo
+              delectus neque porro iusto placeat. Sint sunt dolore, at veniam
+              facere ipsam cumque illo quo repellendus necessitatibus,
+              recusandae quos. Aut ratione totam libero nemo, hic enim! Lorem
+              ipsum dolor sit amet consectetur adipisicing elit. Optio sed
+              quasi, numquam provident iusto quidem libero adipisci ad expedita
+              corrupti voluptatum voluptatibus veniam pariatur perspiciatis
+              repellendus commodi in quod voluptatem. Maiores excepturi quo
+              nesciunt non autem ex consectetur aliquid dignissimos cum mollitia
+              eum blanditiis voluptate suscipit, ad vitae at atque amet illum
+              accusamus. Provident dicta, debitis necessitatibus molestiae
+              beatae quam ipsum mollitia neque repudiandae nisi voluptate illo
+              ipsam porro? Beatae, ipsum? Suscipit rem consequatur
+              necessitatibus deleniti iure ipsam obcaecati, molestiae, qui ut
+              adipisci quisquam, accusantium error sit praesentium placeat
+              laboriosam commodi fugiat officiis quidem corporis? Fuga officiis
+              perspiciatis et sed!
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Responsive Form</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;1,700&family=Roboto:wght@400;700&display=swap");
+
+      /* Default styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary-text-color: black;
+        --secondary-text-color: grey;
+        --accent-color: lightblue;
+        --accent-dark-color: blue;
+        --padding-inline-section: 20px;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        color: var(--primary-text-color);
+      }
+
+      h1 {
+        font-size: 3rem;
+      }
+
+      h2 {
+        font-size: 2rem;
+      }
+
+      h3 {
+        font-size: 1.5rem;
+      }
+
+      p {
+        font-family: "Roboto", sans-serif;
+        font-size: 1.25rem;
+        color: var(--secondary-text-color);
+        line-height: 1.5rem;
+      }
+
+      a {
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .small-bold-text {
+        font-size: 1rem;
+        font-weight: 700;
+      }
+
+      .container {
+        max-width: auto;
+        margin-inline: auto;
+        padding-inline: 200px;
+      }
+
+      .button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .semi-rounded-button {
+        padding: 10px 20px;
+        background-color: blue;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+      }
+
+      /* Responsive styles */
+      @media (max-width: 768px) {
+        .banner-container {
+          padding-inline: 20px; /* Adjust padding for smaller screens */
+        }
+      }
+
+      @media (max-width: 576px) {
+        h1 {
+          font-size: 2.5rem; /* Reduce h1 font size for smaller screens */
+        }
+
+        h2 {
+          font-size: 1.5rem; /* Reduce h2 font size for smaller screens */
+        }
+
+        h3 {
+          font-size: 1.25rem; /* Reduce h3 font size for smaller screens */
+        }
+
+        p {
+          font-size: 1rem; /* Reduce paragraph font size for smaller screens */
+        }
+
+        .small-bold-text {
+          font-size: 0.875rem; /* Reduce small-bold-text font size for smaller screens */
+        }
+      }
+
+      @media (max-width: 992px) {
+        .nav-container {
+          padding-inline: 50px; /* Adjust padding for medium-sized screens */
+        }
+      }
+
+      @media (max-width: 768px) {
+        .banner-container {
+          padding-inline: 20px; /* Adjust padding for smaller screens */
+        }
+
+        .small-bold-text {
+          font-size: 0.875rem; /* Reduce font size for smaller screens */
+        }
+
+        .button {
+          flex-direction: column; /* Stack buttons vertically on small screens */
+          align-items: center;
+          margin-top: 10px;
+        }
+
+        .semi-rounded-button {
+          padding: 8px 16px; /* Adjust padding for smaller screens */
+          font-size: 14px; /* Adjust font size for smaller screens */
+        }
+      }
+
+      @media (max-width: 576px) {
+        h1 {
+          font-size: 2rem; /* Reduce h1 font size for smaller screens */
+        }
+
+        h2 {
+          font-size: 1.25rem; /* Reduce h2 font size for smaller screens */
+        }
+
+        h3 {
+          font-size: 1rem; /* Reduce h3 font size for smaller screens */
+        }
+
+        p {
+          font-size: 0.875rem; /* Reduce paragraph font size for smaller screens */
+        }
+
+        .small-bold-text {
+          font-size: 0.75rem; /* Further reduce font size for smaller screens */
+        }
+
+        .semi-rounded-button {
+          padding: 6px 12px; /* Further adjust padding for smaller screens */
+          font-size: 14px; /* Further adjust font size for smaller screens */
+        }
+      }
+
+      .button-gap {
+        margin: 0 10px; /* Adjust the margin value to control the gap width */
+      }
+      .main {
+        font-family: Arial, sans-serif;
+        background-color: rgb(102, 173, 173);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+      }
+
+      .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 500px;
+      }
+
+      .registration-form {
+        padding-right: 10px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        font-weight: bold;
+      }
+
+      .form-group input {
+        width: 95%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        resize: vertical;
+      }
+
+      .btn-submit {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top-banner" style="background-color: rgb(2, 2, 44)">
+      <div class="banner-container" style="margin-left: 49px">
+        <div
+          class="small-bold-text"
+          style="
+            display: flex;
+            align-items: center;
+            color: white;
+            font-size: 12px;
+            height: 40px;
+          "
+        >
+          <img
+            src="img\pngwing.png"
+            alt=""
+            style="margin-right: 10px; width: 40px; height: 40px"
+          />
+          Government Of India
+        </div>
+      </div>
+    </div>
+
+    <nav
+      style="
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        margin: auto;
+        overflow: hidden;
+        position: relative;
+      "
+    >
+      <div
+        class="nav-container"
+        style="
+          width: 100%;
+          margin: auto;
+          overflow: hidden;
+          position: relative;
+          margin-left: 40px;
+        "
+      >
+        <div style="display: flex; align-items: center">
+          <img src="img\emblem.png" alt="" style="width: 60px; height: 90px" />
+          <img src="img\line.png" alt="" style="width: 40px; height: 90px" />
+          <img
+            src="img\digivault.png"
+            alt=""
+            style="width: 90px; height: 100px"
+          />
+          <div
+            class="small-bold-text"
+            style="
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              color: blue;
+              font-size: 30px;
+              margin-right: 800px;
+            "
+          >
+            DigiVault
+            <div style="color: blue; font-size: 10px">
+              A secure and trust files
+            </div>
+          </div>
+          <!-- <div class="button">
+            <button class="semi-rounded-button">Sign In</button>
+            <div class="button-gap"></div>
+            <button class="semi-rounded-button">Sign Up</button>
+          </div> -->
+        </div>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="container">
+        <h2>Registration Form</h2>
+        <form id="registration-form">
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="courseName">Course Name:</label>
+            <input type="text" id="courseName" name="courseName" required />
+          </div>
+          <div class="form-group">
+            <label for="courseId">Course ID:</label>
+            <input type="text" id="courseId" name="courseId" required />
+          </div>
+          <div class="form-group">
+            <label for="instituteName">Institute Name:</label>
+            <input
+              type="text"
+              id="instituteName"
+              name="instituteName"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="file" class="custom-file-upload">
+              Upload Certificate
+            </label>
+            <input type="file" id="file" name="file" accept=".pdf" required />
+          </div>
+          <button type="submit" class="btn-submit">Upload</button>
+          <div id="upload-feedback"></div>
+          <!-- Display upload feedback here -->
+        </form>
+      </div>
+
+      <script>
+        const uploadButton = document.querySelector(".btn-submit");
+        const uploadFeedback = document.querySelector("#upload-feedback");
+
+        uploadButton.addEventListener("click", function () {
+          uploadFeedback.textContent = "Uploading..."; // Display uploading message
+          setTimeout(function () {
+            uploadFeedback.textContent = "File Uploaded!"; // Display upload success message (you can customize this)
+          }, 2000); // Simulate a 2-second upload process (you can adjust this time)
+        });
+
+        document
+          .getElementById("registration-form")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            // Retrieve and display form values (excluding the file input)
+            const name = document.getElementById("name").value;
+            const courseName = document.getElementById("courseName").value;
+            const courseId = document.getElementById("courseId").value;
+            const instituteName =
+              document.getElementById("instituteName").value;
+            const fileInput = document.getElementById("file");
+
+            // Check if a file is selected
+            if (fileInput.files.length === 0) {
+              alert("Please select a PDF file for upload.");
+              return;
+            }
+
+            // Display submitted values
+            alert(
+              `Name: ${name}\nCourse Name: ${courseName}\nCourse ID: ${courseId}\nInstitute Name: ${instituteName}\nPDF File: ${fileInput.files[0].name}`
+            );
+            // You can send the form data to the server here for further processing
+            // alert(`Name: ${name}\nCourse Name: ${courseName}\nCourse ID: ${courseId}\nInstitute Name: ${instituteName}`);
+          });
+      </script>
+    </div>
+  </body>
+</html>
