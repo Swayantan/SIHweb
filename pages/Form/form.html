@@ -171,7 +171,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        min-height: 80vh;
+        min-height: 100vh;
       }
 
       .container {
@@ -300,12 +300,20 @@
 
     <div class="main">
       <div class="container">
-        <h2>Registration Form</h2>
+        <h2>Validation Form</h2>
         <form id="registration-form">
           <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required />
           </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required />
+        </div>
+        <div class="form-group">
+            <label for="contact">Contact No.:</label>
+            <input type="tel" id="contact" name="contact" required />
+        </div>
           <div class="form-group">
             <label for="courseName">Course Name:</label>
             <input type="text" id="courseName" name="courseName" required />
@@ -324,12 +332,20 @@
             />
           </div>
           <div class="form-group">
+            <label for="startDate">Course Start Date:</label>
+            <input type="date" id="startDate" name="startDate" required />
+        </div>
+        <div class="form-group">
+            <label for="endDate">Course End Date:</label>
+            <input type="date" id="endDate" name="endDate" required />
+        </div>
+          <div class="form-group">
             <label for="file" class="custom-file-upload">
               Upload Certificate
             </label>
-            <input type="file" id="file" name="file" accept=".pdf" required />
+            <input type="file" id="file" name="file" accept=".png" required />
           </div>
-          <button type="submit" class="btn-submit">Upload</button>
+          <button type="submit" class="btn-submit">Upload & Validate</button>
           <div id="upload-feedback"></div>
           <!-- Display upload feedback here -->
         </form>
@@ -352,11 +368,14 @@
             e.preventDefault();
             // Retrieve and display form values (excluding the file input)
             const name = document.getElementById("name").value;
-            const courseName = document.getElementById("courseName").value;
-            const courseId = document.getElementById("courseId").value;
-            const instituteName =
-              document.getElementById("instituteName").value;
-            const fileInput = document.getElementById("file");
+                const email = document.getElementById("email").value;
+                const contact = document.getElementById("contact").value;
+                const courseName = document.getElementById("courseName").value;
+                const courseId = document.getElementById("courseId").value;
+                const instituteName = document.getElementById("instituteName").value;
+                const startDate = document.getElementById("startDate").value;
+                const endDate = document.getElementById("endDate").value;
+                const fileInput = document.getElementById("file");
 
             // Check if a file is selected
             if (fileInput.files.length === 0) {
@@ -366,8 +385,11 @@
 
             // Display submitted values
             alert(
-              `Name: ${name}\nCourse Name: ${courseName}\nCourse ID: ${courseId}\nInstitute Name: ${instituteName}\nPDF File: ${fileInput.files[0].name}`
-            );
+                    `Name: ${name}\nEmail: ${email}\nContact No.: ${contact}\nCourse Name: ${courseName}\nCourse ID: ${courseId}\nInstitute Name: ${instituteName}\nCourse Start Date: ${startDate}\nCourse End Date: ${endDate}\nPDF File: ${fileInput.files[0].name}`
+                );
+            // alert(
+            //   `Name: ${name}\nCourse Name: ${courseName}\nCourse ID: ${courseId}\nInstitute Name: ${instituteName}\nPDF File: ${fileInput.files[0].name}`
+            // );
             // You can send the form data to the server here for further processing
             // alert(`Name: ${name}\nCourse Name: ${courseName}\nCourse ID: ${courseId}\nInstitute Name: ${instituteName}`);
           });
