@@ -1,6 +1,6 @@
 import hashlib
 import os
-from flask import Flask, render_template, current_app, request, redirect, url_for, g
+from flask import Flask, render_template, current_app, request, redirect, url_for, g, jsonify, json
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
@@ -12,8 +12,11 @@ from time import ctime, sleep
 import threading
 import qrcode
 import cv2
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 def create_connection():
@@ -90,6 +93,8 @@ def before_request():
     g.public_key = public_key
 
 # Function to generate a QR code
+
+
 def generate_qr_code(data, output_file):
     qr = qrcode.QRCode(
         version=1,
@@ -104,6 +109,8 @@ def generate_qr_code(data, output_file):
     qr_img.save(output_file)
 
 # Function to read a QR code from an image
+
+
 def read_qr_code(image_path):
     # Load the image
     img = cv2.imread(image_path)
@@ -112,12 +119,14 @@ def read_qr_code(image_path):
     detector = cv2.QRCodeDetector()
 
     # Detect and decode the QR code
-    retval, decoded_info, points, straight_qrcode = detector.detectAndDecodeMulti(img)
+    retval, decoded_info, points, straight_qrcode = detector.detectAndDecodeMulti(
+        img)
 
     if retval:
         return decoded_info
     else:
         return None
+
 
 class Block:
     def __init__(self, timestamp, data, previous_hash):
@@ -192,7 +201,8 @@ class Blockchain:
 
     def add_block(self, data, public_key):
         Blockchain.counter += 1
-        timestamp = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=5, minutes=30))).strftime("%a %b %d %H:%M:%S %Y")
+        timestamp = datetime.datetime.now(datetime.timezone(
+            datetime.timedelta(hours=5, minutes=30))).strftime("%a %b %d %H:%M:%S %Y")
         previous_hash = self.chain[-1].current_hash if self.chain else ""
         new_block = Block(timestamp, data, previous_hash)
         new_block.encrypt_data(public_key)
@@ -209,21 +219,21 @@ class Blockchain:
             c.execute("INSERT INTO blocks (timestamp, encrypted_data, previous_hash, current_hash) VALUES (?, ?, ?, ?)",
                       (block.timestamp, block.encrypted_data, block.previous_hash, block.current_hash))
             conn.commit()
-    
+
     def return_the_hash(self, block):
 
         file_path = "hash.txt"
-        text_to_add = block.encrypted_data   
+        text_to_add = block.encrypted_data
         try:
             with open(file_path, "a") as file:
                 file.writelines(text_to_add + "\n")
         except FileNotFoundError:
             with open(file_path, "w") as file:
-                file.writelines(text_to_add + "\n")   
+                file.writelines(text_to_add + "\n")
 
     def create_qr_code(self, block):
 
-        file_path_qr = f"qr_code_{Blockchain.counter}.png"
+        file_path_qr = f"static/qr_code_{Blockchain.counter}.png"
         data_to_be_encoded = block.encrypted_data
 
         generate_qr_code(data_to_be_encoded, file_path_qr)
@@ -263,24 +273,52 @@ def index():
         }
         blocks.append(block_dict)
 
-    return render_template("index.html", blocks=blocks)
+    # return render_template("index.html", blocks=blocks)
+    return render_template("index.html")
 
 
 @app.route("/add_block", methods=["POST"])
+# @cross_origin()
+@cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
 def add_block():
     if request.method == 'POST':
         # Retrieve the form data submitted by the user
         data = {
             'name': request.form['name'],
             'email': request.form['email'],
-            'message': request.form['message']
+            'phnumber': request.form['phnumber'],
+            'coursename': request.form['coursename'],
+            'courseid': request.form['courseid'],
+            'instname': request.form['instname'],
+            'startdate': request.form['startdate'],
+            'enddate': request.form['enddate']
         }
 
-    public_key = g.public_key
+        public_key = g.public_key
 
-    blockchain.add_block(data, public_key)
+        blockchain.add_block(jsonify(data), public_key)
+        generated_qr_code = f"qr_code_{blockchain.counter}.png"
 
+        response_data = {
+            "qr_code": generated_qr_code
+        }
+
+        print(response_data)
+
+        # return jsonify(response_data)
+        # return f"qr_code: {generated_qr_code}"
+        return app.response_class(
+            response=json.dumps(response_data),
+            status=200,
+            mimetype="application/json"
+        )
     return redirect(url_for("index"))
+
+
+@app.route("/validate_block", methods=["POST"])
+def validate_block():
+    # TODO: validate the certificate
+    pass
 
 
 if __name__ == "__main__":

@@ -1,4 +1,36 @@
-function generateCertificate() {
+async function uploadCertificateInfo() {
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const phnumber = document.getElementById("phnumber").value;
+    const coursename = document.getElementById("coursename").value;
+    const courseid = document.getElementById("courseid").value;
+    const instname = document.getElementById("instname").value;
+    const startdate = document.getElementById("startdate").value;
+    const enddate = document.getElementById("enddate").value;
+
+    const formData = new FormData();
+
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("phnumber", phnumber);
+    formData.append("coursename", coursename);
+    formData.append("courseid", courseid);
+    formData.append("instname", instname);
+    formData.append("startdate", startdate);
+    formData.append("enddate", enddate);
+
+    console.log("uploading certificate data: ", {
+        name, email, phnumber, coursename, courseid, instname, startdate, enddate
+    });
+    const res = await fetch('http://127.0.0.1:5000/add_block', {
+        method: "POST",
+        mode: "cors",
+        body: formData
+    })
+    console.log(res);
+}
+
+async function generateCertificate() {
     const name = document.getElementById("name").value;
     const coursename = document.getElementById("coursename").value;
     const courseid = document.getElementById("courseid").value;
@@ -10,6 +42,8 @@ function generateCertificate() {
         alert("Please enter a name.");
         return;
     }
+
+    await uploadCertificateInfo();
 
     const certificateCanvas = document.getElementById("certificateCanvas");
     const certificateContext = certificateCanvas.getContext("2d");
